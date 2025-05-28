@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+/* scrollbar */
+#commentSection::-webkit-scrollbar {
+  width: 4px;
+}
+#commentSection::-webkit-scrollbar-thumb {
+  background-color: hsl(220, 10%, 56%);
+  border-radius: 2px;
+}
+
+/* ### Primary */
+.purple-600 {
+  background-color: hsl(238, 40%, 52%);
+}
+.pink-400 {
+  background-color: hsl(358, 79%, 66%);
+}
+.purple-200 {
+  background-color: hsl(239, 57%, 97%);
+}
+.pink-200 {
+  background-color: hsl(357, 100%, 86%);
+}
+
+.f-purple-600 {
+  fill: #5457b6;
+}
+.-purple-200 {
+  fill: hsl(239, 57%, 97%);
+}
+
+.t-purple-600 {
+  color: hsl(238, 40%, 52%);
+}
+.t-pink-400 {
+  color: hsl(358, 79%, 66%);
+}
+.t-purple-200 {
+  color: hsl(239, 57%, 85%);
+}
+.t-pink-200 {
+  color: hsl(357, 100%, 86%);
+}
+
+/* ### Neutral */
+.grey-800 {
+  background-color: hsl(212, 24%, 26%);
+}
+.grey-500 {
+  background-color: hsl(211, 10%, 45%);
+}
+.grey-100 {
+  background-color: hsl(223, 19%, 93%);
+}
+.grey-50 {
+  background-color: hsl(228, 33%, 97%);
+}
+.white {
+  background-color: hsl(0, 100%, 100%);
+}
+
+.t-grey-800 {
+  color: hsl(212, 24%, 26%);
+}
+.t-grey-500 {
+  color: hsl(211, 10%, 45%);
+}
+.t-grey-100 {
+  color: hsl(223, 19%, 93%);
+}
+.t-grey-50 {
+  color: hsl(228, 33%, 97%);
+}
+.t-white {
+  color: hsl(0, 100%, 100%);
+}
+
+* {
+  font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.voteMinus:hover .svgMinus,
+.votePlus:hover .svgPlus {
+  fill: hsl(238, 40%, 68%);
+}
+.voteMinus:active .svgMinus,
+.votePlus:active .svgPlus {
+  fill: hsl(238, 40%, 52%);
+}
