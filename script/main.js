@@ -43,7 +43,7 @@ function loadComments(createdClone, x) {
 
 // iterate over each of the comments and render
 newData.comments.forEach(x => {
-    const storedUserComments = JSON.parse(localStorage.getItem("userComments")) || "[]";
+    const storedUserComments = JSON.parse(localStorage.getItem("userComments") || "[]");
 
     storedUserComments.forEach(comment => {
         loadComments(createClone(comment), comment);
