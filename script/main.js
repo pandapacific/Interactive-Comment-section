@@ -43,7 +43,7 @@ function loadComments(createdClone, x) {
 
 // iterate over each of the comments and render
 newData.comments.forEach(x => {
-    const storedUserComments = JSON.parse(localStorage.getItem("userComments")) || [];
+    const storedUserComments = JSON.parse(localStorage.getItem("userComments")) || "[]";
 
     storedUserComments.forEach(comment => {
         loadComments(createClone(comment), comment);
@@ -143,7 +143,7 @@ mainSendBtns.forEach(btn => {
             replies: []
         }
         // saving to local storage
-        const savedComments = JSON.parse(localStorage.getItem("userComments") || []);
+        const savedComments = JSON.parse(localStorage.getItem("userComments") || "[]");
         savedComments.push(userObj);//add comment
         localStorage.setItem("userComments", JSON.stringify(savedComments));
 
