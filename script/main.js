@@ -1,10 +1,11 @@
-import newData from "../script/data.js";
 import data from "../script/data.js"; //Import the data module for the comments
 
-// Identify the comments section
 const commentSection = document.getElementById("commentSection");
-function createClone(x) {
-    const clone = document.querySelector("#template").content.cloneNode(true).querySelector(".toBeCloned"); //clone the template
+const main = document.querySelector("main");
+
+function createClone(x, tempId) {
+    const clone = document.querySelector(`#${tempId}`).content.cloneNode(true).querySelector(".toBeCloned"); //clone the template
+    // console.log(clone);
     const userImage = clone.querySelector(".comment").querySelector(".comment-meta").querySelector("img");
     const userName = clone.querySelector(".comment").querySelector(".comment-meta").querySelector(".username");
     const timeStamp = clone.querySelector(".comment").querySelector(".comment-meta").querySelector(".createdAt");
@@ -23,44 +24,49 @@ function createClone(x) {
     // return clone;
     return clone;
 }
-// load comments and replies
-function loadComments(createdClone, x) {
+function cloneForm() {
+    const replyClone = document.querySelector("#replyForm").content.cloneNode(true).querySelector(".replyForm"); //clone the template
+    return replyClone;
+}
+
+function loadComments(x, tempId, section) {
     // append created comment
-    commentSection.append(createdClone);
+    const clone = createClone(x, tempId);
+    section.append(clone);
+    return clone;
 
     // append created replies
     if (x.replies && x.replies.length > 0) {
         let replyClone;
-        const replySection = createdClone.querySelector(".reply");
+        const replySection = clone.querySelector(".reply");
         replySection.classList.remove("hidden");
         replySection.classList.add("flex")
         x.replies.forEach(reply => {
-            replyClone = createClone(reply);
+            replyClone = createClone(reply, tempId);
             replySection.append(replyClone);
         })
     }
 }
 
-// iterate over each of the comments and render
-newData.comments.forEach(x => {
-    const storedUserComments = JSON.parse(localStorage.getItem("userComments") || "[]");
-
-    storedUserComments.forEach(comment => {
-        loadComments(createClone(comment), comment);
-    });
-
-    // append clone format
-    loadComments(createClone(x), x);
 
 
+// render stored data comments
+data.comments.forEach(x => {
+    loadComments(x, "dataComment", commentSection);
 })
+// render past comments
+{
+    const storedUserComments = JSON.parse(localStorage.getItem("userComments") || "[]");
+    storedUserComments.forEach(comment => {
+        loadComments(comment, "userComment", commentSection);
+    });
+}
 
 // vote functionality
-const commentContainer = document.getElementById("commentSection"); //locate overall comment container for event delegation
 let hasVotedUp = false; // check if the user has voted up
 let hasVotedDown = false; // check if the user has voted down
 let hasVoted = false; // check if the user has voted
-commentContainer.addEventListener("click", (e) => {
+commentSection.addEventListener("click", (e) => {
     // locate the buttons
     const plusVote = e.target.closest(".votePlus");
     const minusVote = e.target.closest(".voteMinus");
@@ -119,43 +125,84 @@ commentContainer.addEventListener("click", (e) => {
     }
 })
 
-// send comment functionality
-const mainCommentForm = document.getElementById("commentForm"); //locate main comment form
-const mainSendBtns = mainCommentForm.querySelectorAll(".send"); //locate both send buttons
 //send comment logic
-mainSendBtns.forEach(btn => {
-    btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const mainText = mainCommentForm.querySelector(".textBox").value; // locate textarea input
-        // comment object
-        const userObj = {
-            id: Math.floor((Math.random()) * 10000),
-            content: mainText,
-            createdAt: new Date().toISOString(),
-            score: 0,
-            user: {
-                image: {
-                    png: "./images/avatars/image-juliusomo.png",
-                    webp: "./images/avatars/image-juliusomo.webp"
-                },
-                username: "juliusomo"
+// comment send function
+function sendComment(form, tempId, section) {
+    const mainText = form.querySelector(".textBox").value.trim(); // locate textarea input
+    // comment object
+    const userObj = {
+        id: Math.floor((Math.random()) * 10000),
+        content: mainText,
+        createdAt: new Date().toISOString(),
+        score: 0,
+        user: {
+            image: {
+                png: "./images/avatars/image-juliusomo.png",
+                webp: "./images/avatars/image-juliusomo.webp"
             },
-            replies: []
-        }
-        // saving to local storage
+            username: "juliusomo"
+        },
+        replies: []
+    }
+
+    // create and append the comment
+    if (mainText && mainText != "") {
+
+        // save to local storage
         const savedComments = JSON.parse(localStorage.getItem("userComments") || "[]");
         savedComments.push(userObj);//add comment
         localStorage.setItem("userComments", JSON.stringify(savedComments));
 
-        // create and append the comment
-        loadComments(createClone(userObj), userObj);
-        console.log(createClone(userObj));
+        loadComments(userObj, tempId, section);
+    }
 
-        // clear textArea
-        mainCommentForm.querySelector(".textBox").value = "";
+    // clear textArea
+    form.querySelector(".textBox").value = "";
+}
 
-    })
+// send comment/reply/edit
+main.addEventListener("click", (e) => {
+    const mainForm = e.target.closest("#commentForm"); // main comment form
+    const replybtn = e.target.closest(".comment-reply") //reply comment btn
+    const editForm = e.target.closest(".editForm") //edit user comment form
+
+    if (mainForm) {
+        const mainFormBtns = mainForm.querySelectorAll(".send"); //locate both send buttons
+        mainFormBtns.forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                sendComment(mainForm, "userComment", commentSection);
+            })
+        })
+    }
+    if (replybtn) {
+        const existingForms = document.querySelectorAll(".replyForm");
+        existingForms.forEach(form => {
+            form.remove();
+        }) //allow only one reply form at a time
+
+        const replyForm = cloneForm();
+        const comRep = replybtn.parentElement.parentElement.parentElement.parentElement; // get the comment/reply/edit parent
+        comRep.append(replyForm); //create a reply form
+        const repSection = comRep.parentElement.querySelector(".reply");
+        repSection.classList.remove("hidden");
+        repSection.classList.add("flex");
+
+        // send the reply
+        const replyFormBtns = replyForm.querySelectorAll(".send"); //locate both send buttons
+        replyFormBtns.forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                sendComment(replyForm, "userComment", repSection);
+            })
+        })
+
+        // remove the form
+        if (repSection.children.includes(createClone(, tempId);))
+replyForm.remove();
+    }
 })
+
 
 // time calculating function
 function formatTimeAgo(createdAt) {
@@ -190,8 +237,5 @@ function updateTimestamps() {
         el.innerHTML = newText;
     });
 }
-
 // update every 30 seconds
 setInterval(updateTimestamps, 30000);
-
-// local storage

@@ -1,96 +1,307 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  <title>Frontend Mentor | Interactive comments section</title>
-  <link rel="stylesheet" href="styles.css">  
-  <script type="module" src="./script/main.js
-  "></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+    <title>Frontend Mentor | Interactive comments section</title>
+    <link rel="stylesheet" href="styles.css">  
+    <script type="module" src="./script/main.js
+    "></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  </head>
 
-<body class="purple-200">
+  <body class="purple-200">
 
-  <main class="w-full mx-auto sm:max-w-[40rem] md:max-w-[48rem] px-3 py-8 h-screen purple-200 flex flex-col justify-between gap-y-5">
+    <main class="w-full mx-auto sm:max-w-[40rem] md:max-w-[48rem] px-3 py-8 h-screen purple-200 flex flex-col justify-between gap-y-5">
+      
+      <section id="commentSection" class="w-full pr-1 flex flex-col gap-y-4 caret-transparent overflow-y-scroll">
+        
+        <!-- data comments template -->
+        <template id="dataComment">
+
+          <section class="toBeCloned flex flex-col gap-y-4">
+
+            <!-- comment/reply/edit form -->
+            <section class="comRep flex flex-col gap-y-4">
+
+              <!-- comment -->
+              <section id="x" class="comment rounded-lg bg-white flex gap-x-4 md:gap-x-6 p-4 md:py-8 md:px-6 text-gray-500 caret-transparent">
+
+                <!-- desktopvote -->
+                <div class="comment-vote hidden md:flex md:flex-col  md:h-fit md:gap-y-4 items-center purple-200 px-3 py-2 md:py-3 rounded-md">
+                  <button class="votePlus hover:cursor-pointer w-3 aspect-square">
+                    <svg width="11" id="svgPlus" height="11" xmlns="http://www.w3.org/2000/svg">
+                      <path 
+                      d="M6.33 10.896c.137 0 .255-.05.354-.149.1-.1.149-.217.149-.354V7.004h3.315c.136 0 .254-.05.354-.149.099-.1.148-.217.148-.354V5.272a.483.483 0 0 0-.148-.354.483.483 0 0 0-.354-.149H6.833V1.4a.483.483 0 0 0-.149-.354.483.483 0 0 0-.354-.149H4.915a.483.483 0 0 0-.354.149c-.1.1-.149.217-.149.354v3.37H1.08a.483.483 0 0 0-.354.15c-.1.099-.149.217-.149.353v1.23c0 .136.05.254.149.353.1.1.217.149.354.149h3.333v3.39c0 .136.05.254.15.353.098.1.216.149.353.149H6.33Z" class="fill-[#C5C6EF] svgPlus"/>
+                    </svg>
+                  </button>
+                  <div class ="voteText">0</div>
+                  <button class="voteMinus hover:cursor-pointer w-3 aspect-square">
+                    <svg width="11" height="3" id="svgMinus" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9.256 2.66c.204 0 .38-.056.53-.167.148-.11.222-.243.222-.396V.722c0-.152-.074-.284-.223-.395a.859.859 0 0 0-.53-.167H.76a.859.859 0 0 0-.53.167C.083.437.009.57.009.722v1.375c0 .153.074.285.223.396a.859.859 0 0 0 .53.167h8.495Z" class="svgMinus fill-[#C5C6EF]">
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- comment wrap -->
+                <div class="commentWrap flex flex-col gap-y-4">
+
+                  <div class="comment-meta flex justify-between items-center">
+
+                    <div class="profileWrap flex gap-x-3 justify-between items-center">
+
+                      <img src="./images/avatars/image-amyrobson.png" alt="user Image" class="userImage min-w-7.5 max-h-7.5">
+
+                      <div class="username t-grey-800 font-medium h-fit">amyrobson</div>
+
+                      <div class="createdAt text-gray-500 h-fit" data-time="">1 month ago</div>
+
+                    </div>
+
+                    <div class="comment-reply hidden md:flex gap-x-2 items-center  hover:cursor-pointer hover:brightness-120 active:brightness-200"> 
+                      <img src="./images/icon-reply.svg" class="w-3 h-3" alt="reply">
+                      <span class="reply-text">Reply</span>
+                    </div>
+                    
+                  </div>
+
+                  <div class="comment-body">
+                    Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.
+                  </div>
+
+                  <div class="comment-footer flex justify-between t-purple-600 font-medium md:hidden">
+
+                    <div class="comment-vote flex gap-x-5 items-center purple-200 justify-between px-3 py-2 rounded-md">
+                      <button class="votePlus hover:cursor-pointer w-3 aspect-square">
+                        <svg width="11" id="svgPlus" height="11" xmlns="http://www.w3.org/2000/svg">
+                          <path 
+                          d="M6.33 10.896c.137 0 .255-.05.354-.149.1-.1.149-.217.149-.354V7.004h3.315c.136 0 .254-.05.354-.149.099-.1.148-.217.148-.354V5.272a.483.483 0 0 0-.148-.354.483.483 0 0 0-.354-.149H6.833V1.4a.483.483 0 0 0-.149-.354.483.483 0 0 0-.354-.149H4.915a.483.483 0 0 0-.354.149c-.1.1-.149.217-.149.354v3.37H1.08a.483.483 0 0 0-.354.15c-.1.099-.149.217-.149.353v1.23c0 .136.05.254.149.353.1.1.217.149.354.149h3.333v3.39c0 .136.05.254.15.353.098.1.216.149.353.149H6.33Z" class="fill-[#C5C6EF] svgPlus"/>
+                        </svg>
+                      </button>
+                      <div class ="voteText">0</div>
+                      <button class="voteMinus hover:cursor-pointer w-3 aspect-square">
+                        <svg width="11" height="3" id="svgMinus" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M9.256 2.66c.204 0 .38-.056.53-.167.148-.11.222-.243.222-.396V.722c0-.152-.074-.284-.223-.395a.859.859 0 0 0-.53-.167H.76a.859.859 0 0 0-.53.167C.083.437.009.57.009.722v1.375c0 .153.074.285.223.396a.859.859 0 0 0 .53.167h8.495Z" class="svgMinus fill-[#C5C6EF]">
+                        </svg>
+                      </button>
+                    </div>
+
+                    <div class="comment-reply flex gap-x-2 items-center  hover:cursor-pointer hover:brightness-120 active:brightness-200"> 
+                      <img src="./images/icon-reply.svg" class="w-3 h-3" alt="reply">
+                      <span class="reply-text">Reply</span>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </section>               
+
+            </section>
+
+            <!-- reply section -->
+            <section class="hidden reply flex-col gap-y-4 md:ml-8 caret-transparent border-s-[1.5px] border-gray-200 pl-4">
+
+            </section>
+
+          </section>
+
+        </template>
+
+        <!-- user comments template -->
+        <template id="userComment">
+
+          <section class="toBeCloned flex flex-col gap-y-4">
+          
+            <!-- comment/Edit/Reply section -->
+            <section class="comRep flex flex-col bg-white">
+
+              <!-- comment -->
+              <section id="x" class="comment rounded-lg bg-white flex gap-x-4 md:gap-x-6 p-4 md:py-8 md:px-6 text-gray-500 caret-transparent">
+
+                <!-- desktopvote -->
+                <div class="comment-vote hidden md:flex md:flex-col  md:h-fit md:gap-y-4 items-center purple-200 px-3 py-2 md:py-3 rounded-md">
+                  <button class="votePlus hover:cursor-pointer w-3 aspect-square">
+                    <svg width="11" id="svgPlus" height="11" xmlns="http://www.w3.org/2000/svg">
+                      <path 
+                      d="M6.33 10.896c.137 0 .255-.05.354-.149.1-.1.149-.217.149-.354V7.004h3.315c.136 0 .254-.05.354-.149.099-.1.148-.217.148-.354V5.272a.483.483 0 0 0-.148-.354.483.483 0 0 0-.354-.149H6.833V1.4a.483.483 0 0 0-.149-.354.483.483 0 0 0-.354-.149H4.915a.483.483 0 0 0-.354.149c-.1.1-.149.217-.149.354v3.37H1.08a.483.483 0 0 0-.354.15c-.1.099-.149.217-.149.353v1.23c0 .136.05.254.149.353.1.1.217.149.354.149h3.333v3.39c0 .136.05.254.15.353.098.1.216.149.353.149H6.33Z" class="fill-[#C5C6EF] svgPlus"/>
+                    </svg>
+                  </button>
+                  <div class ="voteText">0</div>
+                  <button class="voteMinus hover:cursor-pointer w-3 aspect-square">
+                    <svg width="11" height="3" id="svgMinus" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9.256 2.66c.204 0 .38-.056.53-.167.148-.11.222-.243.222-.396V.722c0-.152-.074-.284-.223-.395a.859.859 0 0 0-.53-.167H.76a.859.859 0 0 0-.53.167C.083.437.009.57.009.722v1.375c0 .153.074.285.223.396a.859.859 0 0 0 .53.167h8.495Z" class="svgMinus fill-[#C5C6EF]">
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="w-full commentWrap flex flex-col gap-y-4">
+
+                  <div class="comment-meta flex justify-between items-center">
+
+                    <div class="profileWrap flex gap-x-3 justify-between items-center">
+                      <img src="./images/avatars/image-amyrobson.png" alt="user Image" class="userImage min-w-7.5 max-h-7.5">
+
+                      <div class="username t-grey-800 font-medium h-fit">amyrobson</div>
+
+                      <div class="purple-600 text-white px-1.5 font-medium text-sm h-fit">you</div>
+
+                      <div class="createdAt text-gray-500 h-fit" data-time="">1 month ago</div>
+
+                    </div>
+
+                    <div class="editDel hidden md:flex gap-x-4 font-medium">
+                      
+                      <div class="delete flex gap-x-2 items-center  hover:cursor-pointer hover:brightness-120 active:brightness-200 t-pink-400"> 
+                        <img src="./images/icon-delete.svg" class="w-3 h-3" alt="reply">
+                        <span>Delete</span>
+                      </div>
+          
+                      <div class="edit flex gap-x-2 items-center  hover:cursor-pointer hover:brightness-120 active:brightness-200"> 
+                        <img src="./images/icon-edit.svg" class="w-3 h-3" alt="reply">
+                        <span>Edit</span>
+                      </div>
+
+                    </div>
+                    
+                  </div>
+
+                  <div class="comment-body">
+                    Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.
+                  </div>
+
+                  <div class="comment-footer flex justify-between t-purple-600 font-medium md:hidden">
+
+                    <div class="comment-vote flex gap-x-5 items-center purple-200 justify-between px-3 py-2 rounded-md">
+                      <button class="votePlus hover:cursor-pointer w-3 aspect-square">
+                        <svg width="11" id="svgPlus" height="11" xmlns="http://www.w3.org/2000/svg">
+                          <path 
+                          d="M6.33 10.896c.137 0 .255-.05.354-.149.1-.1.149-.217.149-.354V7.004h3.315c.136 0 .254-.05.354-.149.099-.1.148-.217.148-.354V5.272a.483.483 0 0 0-.148-.354.483.483 0 0 0-.354-.149H6.833V1.4a.483.483 0 0 0-.149-.354.483.483 0 0 0-.354-.149H4.915a.483.483 0 0 0-.354.149c-.1.1-.149.217-.149.354v3.37H1.08a.483.483 0 0 0-.354.15c-.1.099-.149.217-.149.353v1.23c0 .136.05.254.149.353.1.1.217.149.354.149h3.333v3.39c0 .136.05.254.15.353.098.1.216.149.353.149H6.33Z" class="fill-[#C5C6EF] svgPlus"/>
+                        </svg>
+                      </button>
+                      <div class ="voteText">0</div>
+                      <button class="voteMinus hover:cursor-pointer w-3 aspect-square">
+                        <svg width="11" height="3" id="svgMinus" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M9.256 2.66c.204 0 .38-.056.53-.167.148-.11.222-.243.222-.396V.722c0-.152-.074-.284-.223-.395a.859.859 0 0 0-.53-.167H.76a.859.859 0 0 0-.53.167C.083.437.009.57.009.722v1.375c0 .153.074.285.223.396a.859.859 0 0 0 .53.167h8.495Z" class="svgMinus fill-[#C5C6EF]">
+                        </svg>
+                      </button>
+                    </div>
+
+                    <div class="editDel flex gap-x-4">
+                      
+                      <div class="delete flex gap-x-2 items-center  hover:cursor-pointer hover:brightness-120 active:brightness-200 t-pink-400"> 
+                        <img src="./images/icon-delete.svg" class="w-3 h-3" alt="reply">
+                        <span>Delete</span>
+                      </div>
+          
+                      <div class="edit flex gap-x-2 items-center  hover:cursor-pointer hover:brightness-120 active:brightness-200"> 
+                        <img src="./images/icon-edit.svg" class="w-3 h-3" alt="reply">
+                        <span>Edit</span>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </section>
+
+              <!-- Edit form -->
+              <form action="" class="editForm hidden rounded-lg bg-white px-4 md:pb-8 md:px-6 justify-between text-gray-500 caret-transparent md:gap-x-4" method="">
+
+                <div class="hidden md:flex min-w-9 h-9">
+                  <img src="./images/avatars/image-juliusomo.png" class="w-9 h-9" alt="avatar">
+                </div>
+
+                <!-- mobile/tablet -->
+                <div class="w-full flex flex-col gap-y-4 md:h-fit justify-between md:px-4">
+                  <textarea 
+                  class="textBox w-full h-3/5 py-3 px-5 text-lg caret-gray-500  placeholder:text-gray-500 placeholder:text-lg rounded-lg outline outline-gray-300 focus:outline-2 focus:outline-gray-600 resize-none placeholder:caret-transparent"
+                  placeholder="Add a comment..."></textarea>
+
+                  <div class="inputbase flex items-center justify-between md:hidden">
+                    <img src="./images/avatars/image-juliusomo.png" class="w-8" alt="avatar">
+                    <input type="submit" value="SEND" name="send" class="send py-2 px-6 rounded-lg purple-600 hover:cursor-pointer font-medium text-white hover:brightness-120 active:brightness-200">
+                  </div>
+                </div>
+                
+                <div class="hidden md:flex h-fit">
+                  <input type="submit" value="SEND" name="send" class="send py-2 px-6 rounded-lg purple-600 hover:cursor-pointer font-medium align-start text-white hover:brightness-120 active:brightness-200">
+                </div>
+          
+              </form>
+
+            </section>
+
+            <!-- reply section -->
+            <section class="hidden reply flex-col gap-y-4 md:ml-8 caret-transparent border-s-[1.5px] border-gray-200 pl-4">
+
+            </section>
+
+          </section>
+
+        </template>
+
+        <!-- reply form temp -->
+        <template id="replyForm">
+          <!-- reply form -->
+          <form action="" class="replyForm rounded-lg bg-white p-4 md:py-8 md:px-6 flex justify-between text-gray-500 caret-transparent md:gap-x-4" method="">
+
+            <div class="hidden md:flex min-w-9 h-9">
+              <img src="./images/avatars/image-juliusomo.png" class="w-9 h-9" alt="avatar">
+            </div>
+
+            <!-- mobile/tablet -->
+            <div class="w-full flex flex-col gap-y-4 md:h-fit justify-between md:px-4">
+              <textarea 
+              class="textBox w-full h-3/5 py-3 px-5 text-lg caret-gray-500  placeholder:text-gray-500 placeholder:text-lg rounded-lg outline outline-gray-300 focus:outline-2 focus:outline-gray-600 resize-none placeholder:caret-transparent"
+              placeholder="Add a comment..."></textarea>
+
+              <div class="inputbase flex items-center justify-between md:hidden">
+                <img src="./images/avatars/image-juliusomo.png" class="w-8" alt="avatar">
+                <input type="submit" value="SEND" name="send" class="send py-2 px-6 rounded-lg purple-600 hover:cursor-pointer font-medium text-white hover:brightness-120 active:brightness-200">
+              </div>
+            </div>
+            
+            <div class="hidden md:flex h-fit">
+              <input type="submit" value="SEND" name="send" class="send py-2 px-6 rounded-lg purple-600 hover:cursor-pointer font-medium align-start text-white hover:brightness-120 active:brightness-200">
+            </div>
+      
+          </form>
+
+        </template>
+
+      </section>
+
+      <form action="" id="commentForm" class="rounded-lg bg-white px-4 py-4 flex justify-between text-gray-500 caret-transparent md:gap-x-4" method="">
+
+        <div class="hidden md:flex min-w-9 h-9">
+          <img src="./images/avatars/image-juliusomo.png" class="w-9 h-9" alt="avatar">
+        </div>
+
+        <!-- mobile/tablet -->
+        <div class="w-full flex flex-col gap-y-4 md:h-fit justify-between md:px-4">
+          <textarea 
+          class="textBox w-full h-3/5 py-3 px-5 text-lg caret-gray-500  placeholder:text-gray-500 placeholder:text-lg rounded-lg outline outline-gray-300 focus:outline-2 focus:outline-gray-600 resize-none placeholder:caret-transparent"
+          placeholder="Add a comment..."></textarea>
+
+          <div class="inputbase flex items-center justify-between md:hidden">
+            <img src="./images/avatars/image-juliusomo.png" class="w-8" alt="avatar">
+            <input type="submit" value="SEND" name="send" class="send py-2 px-6 rounded-lg purple-600 hover:cursor-pointer font-medium text-white hover:brightness-120 active:brightness-200">
+          </div>
+        </div>
+        
+        <div class="hidden md:flex h-fit">
+          <input type="submit" value="SEND" name="send" class="send py-2 px-6 rounded-lg purple-600 hover:cursor-pointer font-medium align-start text-white hover:brightness-120 active:brightness-200">
+        </div>
+        
+      </form>
+
+    </main>
     
-    <section id="commentSection" class="w-full pr-1 flex flex-col gap-y-4 caret-transparent overflow-y-scroll">
-      
-      <template id="template">
-
-       <section class="toBeCloned flex flex-col gap-y-4">
-         <!-- comment -->
-        <section id="x" class="comment rounded-lg bg-white flex flex-col gap-y-4 p-4 text-gray-500 caret-transparent">
-        <div class="comment-meta flex gap-x-4">
-          <img src="./images/avatars/image-amyrobson.png" alt="user Image" class="userImage min-w-7.5 max-h-7.5">
-          <div class="username t-grey-800 font-medium">amyrobson</div>
-          <div class="createdAt text-gray-500" data-time="">1 month ago</div>
-        </div>
-
-        <div class="comment-body">
-          Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.
-        </div>
-
-        <div class="comment-footer flex justify-between t-purple-600 font-medium">
-          <div class="comment-vote flex gap-x-5 items-center purple-200 justify-between px-3 py-2 rounded-md">
-            <button class="votePlus hover:cursor-pointer w-3 aspect-square">
-              <svg width="11" id="svgPlus" height="11" xmlns="http://www.w3.org/2000/svg">
-                <path 
-                d="M6.33 10.896c.137 0 .255-.05.354-.149.1-.1.149-.217.149-.354V7.004h3.315c.136 0 .254-.05.354-.149.099-.1.148-.217.148-.354V5.272a.483.483 0 0 0-.148-.354.483.483 0 0 0-.354-.149H6.833V1.4a.483.483 0 0 0-.149-.354.483.483 0 0 0-.354-.149H4.915a.483.483 0 0 0-.354.149c-.1.1-.149.217-.149.354v3.37H1.08a.483.483 0 0 0-.354.15c-.1.099-.149.217-.149.353v1.23c0 .136.05.254.149.353.1.1.217.149.354.149h3.333v3.39c0 .136.05.254.15.353.098.1.216.149.353.149H6.33Z" class="fill-[#C5C6EF] svgPlus"/>
-              </svg>
-            </button>
-            <div class ="voteText">0</div>
-            <button class="voteMinus hover:cursor-pointer w-3 aspect-square">
-              <svg width="11" height="3" id="svgMinus" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9.256 2.66c.204 0 .38-.056.53-.167.148-.11.222-.243.222-.396V.722c0-.152-.074-.284-.223-.395a.859.859 0 0 0-.53-.167H.76a.859.859 0 0 0-.53.167C.083.437.009.57.009.722v1.375c0 .153.074.285.223.396a.859.859 0 0 0 .53.167h8.495Z" class="svgMinus fill-[#C5C6EF]">
-              </svg>
-            </button>
-          </div>
-
-          <div class="comment-reply flex gap-x-2 items-center  hover:cursor-pointer hover:brightness-120 active:brightness-200"> 
-            <img src="./images/icon-reply.svg" class="w-3 h-3" alt="reply">
-            <span class="reply-text">Reply</span>
-          </div>
-
-        </div>
-        </section>
-
-        <!-- reply section -->
-         <section class="hidden reply flex-col gap-y-4 md:ml-8 caret-transparent border-s-[1.5px] border-gray-200 pl-4">
-         </section>
-       </section>
-
-      </template>
-
-    </section>
-
-    <form action="" id="commentForm" class="rounded-lg bg-white px-4 py-4 flex justify-between text-gray-500 caret-transparent md:gap-x-4" method="">
-
-      <div class="hidden md:flex min-w-9 h-9">
-        <img src="./images/avatars/image-juliusomo.png" class="w-9 h-9" alt="avatar">
-      </div>
-
-      <!-- mobile/tablet -->
-      <div class="w-full flex flex-col gap-y-4 md:h-fit justify-between md:px-4">
-        <textarea 
-        class="textBox w-full h-3/5 py-3 px-5 text-lg caret-gray-500  placeholder:text-gray-500 placeholder:text-lg rounded-lg outline outline-gray-300 focus:outline-2 focus:outline-gray-600 resize-none placeholder:caret-transparent"
-        placeholder="Add a comment..."></textarea>
-
-        <div class="inputbase flex items-center justify-between md:hidden">
-          <img src="./images/avatars/image-juliusomo.png" class="w-8" alt="avatar">
-          <input type="submit" value="SEND" name="send" class="send py-2 px-6 rounded-lg purple-600 hover:cursor-pointer font-medium text-white hover:brightness-120 active:brightness-200">
-        </div>
-      </div>
-      
-      <div class="hidden md:flex h-fit">
-        <input type="submit" value="SEND" name="send" class="send py-2 px-6 rounded-lg purple-600 hover:cursor-pointer font-medium align-start text-white hover:brightness-120 active:brightness-200">
-      </div>
-      
-    </form>
-
-  </main>
-</body>
+  </body>
 </html>
