@@ -61,7 +61,7 @@
 
                     </div>
 
-                    <div class="comment-reply hidden md:flex gap-x-2 items-center  hover:cursor-pointer hover:brightness-120 active:brightness-200"> 
+                    <div class="comment-reply hidden md:flex gap-x-2 items-center  hover:cursor-pointer hover:brightness-120 active:brightness-200 t-purple-600 font-medium"> 
                       <img src="./images/icon-reply.svg" class="w-3 h-3" alt="reply">
                       <span class="reply-text">Reply</span>
                     </div>
@@ -114,13 +114,13 @@
         <!-- user comments template -->
         <template id="userComment">
 
-          <section class="toBeCloned flex flex-col gap-y-4">
+          <section class="toBeCloned w-full flex flex-col gap-y-4">
           
             <!-- comment/Edit/Reply section -->
-            <section class="comRep flex flex-col bg-white">
+            <section class="comRep w-full rounded-lg flex flex-col bg-white">
 
               <!-- comment -->
-              <section id="x" class="comment rounded-lg bg-white flex gap-x-4 md:gap-x-6 p-4 md:py-8 md:px-6 text-gray-500 caret-transparent">
+              <section id="x" class="comment w-full rounded-lg bg-white flex gap-x-4 md:gap-x-6 p-4 md:py-8 md:px-6 text-gray-500 caret-transparent">
 
                 <!-- desktopvote -->
                 <div class="comment-vote hidden md:flex md:flex-col  md:h-fit md:gap-y-4 items-center purple-200 px-3 py-2 md:py-3 rounded-md">
@@ -160,7 +160,7 @@
                         <span>Delete</span>
                       </div>
           
-                      <div class="edit flex gap-x-2 items-center  hover:cursor-pointer hover:brightness-120 active:brightness-200"> 
+                      <div class="edit flex gap-x-2 items-center  hover:cursor-pointer hover:brightness-120 active:brightness-200 t-purple-600"> 
                         <img src="./images/icon-edit.svg" class="w-3 h-3" alt="reply">
                         <span>Edit</span>
                       </div>
@@ -169,7 +169,7 @@
                     
                   </div>
 
-                  <div class="comment-body">
+                  <div class="comment-body break-words">
                     Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.
                   </div>
 

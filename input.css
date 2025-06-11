@@ -90,3 +90,8 @@
 .votePlus:active .svgPlus {
   fill: hsl(238, 40%, 52%);
 }
+
+.flat-reply {
+  margin-left: 0 !important;
+  border-left: none !important;
+}
