@@ -197,6 +197,9 @@
   .h-9 {
     height: calc(var(--spacing) * 9);
   }
+  .h-\[20\%\] {
+    height: 20%;
+  }
   .h-fit {
     height: fit-content;
   }
