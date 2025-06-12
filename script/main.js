@@ -60,6 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
             clone.dataset.type = x.type;
         }
 
+        const voteContainer = clone.querySelector(".comment-vote"); // or whatever targets the container
+        voteContainer.dataset.votedUp = "false";
+        voteContainer.dataset.votedDown = "false";
+
         // return clone;
         return clone;
     }
@@ -110,66 +114,53 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     // vote functionality
-    let hasVotedUp = false; // check if the user has voted up
-    let hasVotedDown = false; // check if the user has voted down
-    let hasVoted = false; // check if the user has voted
     commentSection.addEventListener("click", (e) => {
         // locate the buttons
         const plusVote = e.target.closest(".votePlus");
         const minusVote = e.target.closest(".voteMinus");
-        let voteCount;
+        if (!plusVote && !minusVote) return;
 
-        // prevent negative votes
-        function resetNegative(voteCount, vote) {
-            if (voteCount < 0) {
-                voteCount = 0; //reset voteCount
-                vote.textContent = voteCount;
-                return voteCount;
-            } else { return voteCount }
-        }
-        function checkVoteReset() {
-            if (voteCount === 0) {
-                hasVotedUp = false;
-                hasVotedDown = false;
-                hasVoted = false;
-            }
-        }
+        const voteContainer = (plusVote || minusVote).parentElement;
+        const voteText = voteContainer.querySelector(".voteText");
+        let voteCount = parseInt(voteText.textContent);
+
+        // use dataset to track vote state on the voteContainer
+        const state = {
+            up: voteContainer.dataset.votedUp === "true",
+            down: voteContainer.dataset.votedDown === "true"
+        };
+
         // logic
         if (plusVote) {
-            const vote = plusVote.parentElement.querySelector(".voteText");
-            voteCount = parseInt(vote.textContent); // get the vote count
-            if (hasVotedDown) {
-                voteCount++;
-                vote.textContent = voteCount;
-                hasVotedDown = false;
-                hasVoted = false;
-                checkVoteReset();
-            } else if (!hasVotedUp) {
-                voteCount++;
-                vote.textContent = voteCount;
-                hasVotedUp = true;
-                hasVoted = true;
-                checkVoteReset();
+            if (state.down) {
+                voteCount += 1;
+                voteContainer.dataset.votedDown = "false";
+                // checkVoteReset();
+            } else if (!state.up) {
+                voteCount += 1;
+                voteContainer.dataset.votedUp = "true";
+                // checkVoteReset();
+            } else {
+                // user unvotes
+                voteCount -= 1;
+                voteContainer.dataset.votedUp = "false";
             }
         }
         if (minusVote) {
-            const vote = minusVote.parentElement.querySelector(".voteText"); //get the parent element of vote button
-            voteCount = parseInt(vote.textContent); // get the vote count
-            if (hasVotedUp) {
-                voteCount--;
-                vote.textContent = voteCount;
-                hasVotedUp = false;
-                hasVoted = false;
-                checkVoteReset();
-            } else if (!hasVotedDown) {
-                voteCount--;
-                voteCount = resetNegative(voteCount, vote); //reset negative
-                vote.textContent = voteCount;
-                hasVotedDown = true;
-                hasVoted = true;
-                checkVoteReset();
+            if (state.up) {
+                voteCount -= 1;
+                voteContainer.dataset.votedUp = "false";
+            } else if (!state.down && voteCount > 0) {
+                voteCount -= 1;
+                voteContainer.dataset.votedDown = "true";
+            } else if (voteCount > 0) {
+                // user unvotes
+                voteCount += 1;
+                voteContainer.dataset.votedDown = "false";
             }
         }
+        voteCount = Math.max(0, voteCount); // prevent negatives
+        voteText.textContent = voteCount;
     })
 
 
