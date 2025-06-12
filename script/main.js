@@ -289,6 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const mainForm = e.target.closest("#commentForm"); // main comment form
         const replybtn = e.target.closest(".comment-reply") //reply comment btn
         const editbtn = e.target.closest(".edit") //edit user comment form
+        const delbtn = e.target.closest(".delete") //edit user comment form
 
         if (mainForm) {
             const mainFormBtns = mainForm.querySelectorAll(".send"); //locate both send buttons
@@ -398,6 +399,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     editForm.classList.remove("flex", "py-4");
                 }
             })
+        }
+        if (delbtn) {
+            const parentEl = delbtn.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+            console.log(parentEl);
         }
     })
 

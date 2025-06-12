@@ -200,6 +200,9 @@
   .h-fit {
     height: fit-content;
   }
+  .h-full {
+    height: 100%;
+  }
   .h-screen {
     height: 100vh;
   }
@@ -208,6 +211,9 @@
   }
   .max-h-7\.5 {
     max-height: calc(var(--spacing) * 7.5);
+  }
+  .max-h-screen {
+    max-height: 100vh;
   }
   .w-3 {
     width: calc(var(--spacing) * 3);
@@ -357,6 +363,9 @@
   }
   .break-words {
     overflow-wrap: break-word;
+  }
+  .whitespace-pre-line {
+    white-space: pre-line;
   }
   .text-gray-500 {
     color: var(--color-gray-500);
