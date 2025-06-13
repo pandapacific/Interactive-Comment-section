@@ -21,8 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const timeStamp = clone.querySelector(".comment").querySelector(".comment-meta").querySelector(".createdAt");
         const commentText = clone.querySelector(".comment").querySelector(".comment-body");
         const votes = clone.querySelector(".comment").getElementsByClassName("voteText");
-        console.log(votes);
-
         // Update the values
         userImage.src = x.user.image.png;
         userName.textContent = x.user.username;
