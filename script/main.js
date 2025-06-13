@@ -1,18 +1,16 @@
 import data from "../script/data.js"; //Import the data module for the comments
 
-// store data comments and replies in local storage
-const savedComments = JSON.parse(localStorage.getItem("commentList") || "[]");
-if (savedComments.length > 2) {
-    //do nothing
-} else if (savedComments.length == 0) {
-    data.comments.forEach(x => {
-        savedComments.push(x);//add comment
-        localStorage.setItem("commentList", JSON.stringify(savedComments));
-    })
-}
-
-
 document.addEventListener("DOMContentLoaded", () => {
+    // store data comments and replies in local storage
+    const savedComments = JSON.parse(localStorage.getItem("commentList") || "[]");
+    if (savedComments.length > 2) {
+        //do nothing
+    } else if (savedComments.length == 0) {
+        data.comments.forEach(x => {
+            savedComments.push(x);//add comment
+            localStorage.setItem("commentList", JSON.stringify(savedComments));
+        })
+    }
     const commentSection = document.getElementById("commentSection");
     const main = document.querySelector("main");
 
@@ -22,7 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const userName = clone.querySelector(".comment").querySelector(".comment-meta").querySelector(".username");
         const timeStamp = clone.querySelector(".comment").querySelector(".comment-meta").querySelector(".createdAt");
         const commentText = clone.querySelector(".comment").querySelector(".comment-body");
-        const vote = clone.querySelector(".comment").querySelector(".comment-footer").querySelector(".comment-vote").querySelector(".voteText");
+        const votes = clone.querySelector(".comment").getElementsByClassName("voteText");
+        console.log(votes);
 
         // Update the values
         userImage.src = x.user.image.png;
@@ -50,7 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             commentText.textContent = x.content;
         }
-        vote.textContent = x.score;
+        // set the vote count for both mobile and desktop votes
+        Array.from(votes).forEach(vote => {
+            vote.textContent = x.score;
+        });
         clone.querySelector(".comment").id = x.id; //update id
 
         // add required metadata
@@ -162,118 +164,6 @@ document.addEventListener("DOMContentLoaded", () => {
         voteCount = Math.max(0, voteCount); // prevent negatives
         voteText.textContent = voteCount;
     })
-
-
-    //send comment logic
-    // comment send function
-    function sendComment(form, tempId, context, section, info) {
-        const mainText = form.querySelector(".textBox").value.trim(); // locate textarea input
-        const userObj = {
-            id: Math.floor((Math.random()) * 10000000),
-            content: mainText,
-            createdAt: new Date().toISOString(),
-            score: 0,
-            source: "user",
-            user: {
-                image: {
-                    png: "./images/avatars/image-juliusomo.png",
-                    webp: "./images/avatars/image-juliusomo.webp"
-                },
-                username: "juliusomo"
-            },
-            replies: []
-        }
-
-        if (mainText && mainText != "") {
-
-            function findCommentById(commentArray, id) {
-                for (const comment of commentArray) {
-                    if (comment.id == id) {
-                        return comment;
-                    } else if (comment.replies && comment.replies.length > 0) {
-                        const foundInReplies = findCommentById(comment.replies, id);
-                        if (foundInReplies) {
-                            return foundInReplies;
-                        }
-                    }
-                }
-                return null; // explicit fallback
-            }
-
-            if (context == "regular") {
-                savedComments.replies = savedComments.replies || [];
-                savedComments.push(userObj);//add comment obj to regular flow
-                localStorage.setItem("commentList", JSON.stringify(savedComments));
-
-                // render
-                loadComments(userObj, tempId, section);
-            } else if (context == "reply") {
-                // set the repliedTo in userObj
-                userObj.replyingTo = info[1];
-                userObj.content = mainText;
-                // locate the replied comment via id
-                const repliedComment = findCommentById(savedComments, info[0]);
-
-                // save to local storage
-                if (repliedComment) {
-                    repliedComment.replies = repliedComment.replies || [];
-                    repliedComment.replies.push(userObj);
-                    localStorage.setItem("commentList", JSON.stringify(savedComments));
-                } else {
-                    console.warn("No comment found with the given ID!");
-                }
-
-                // render
-                if (repliedComment) loadComments(userObj, tempId, section);
-            } else if (context == "edit") {
-                if (info[1] && info[1] !== null) {
-                    userObj.editingTo = info[1] // set the user to whom a reply is being edited
-                }
-                // reassign
-                const toEdit = document.getElementById(info[0]).querySelector(".comment-body");
-                console.log(toEdit);
-                const edit = form.querySelector(".textBox").value;
-                const parentComment = toEdit.parentElement.parentElement; // get the parent of the comment body
-                const existingTimeStamp = parentComment.querySelector(".createdAt");
-
-                // reassign in localstorage
-                const editedComment = findCommentById(savedComments, info[0]);
-                if (editedComment) {
-                    editedComment.content = edit;
-                    editedComment.editedAt = new Date().toISOString();
-                    localStorage.setItem("commentList", JSON.stringify(savedComments))
-                } else {
-                    console.warn("❌ No comment found with the given ID");
-                }
-
-                // update the comment body and time stamp render
-                if (toEdit)
-                    if (info[1] && info[1] !== null) {
-                        // if the edited comment is a reply, add the mention prefix
-                        const mentionSpan = document.createElement("span");
-                        mentionSpan.classList.add("t-purple-600", "font-medium");
-                        mentionSpan.textContent = `@${info[1]}`; // first word, like "@amyrobson"
-                        const restText = document.createTextNode(" " + edit);
-                        toEdit.innerHTML = ""; // clear old text
-                        toEdit.appendChild(mentionSpan);
-                        toEdit.appendChild(restText);
-                    } else {
-                        toEdit.textContent = edit; //reassign
-                    }
-
-                if (existingTimeStamp) {
-                    existingTimeStamp.textContent = `Edited ${formatTimeAgo(editedComment.editedAt)}`; //update time
-                    existingTimeStamp.setAttribute("data-time", editedComment.editedAt); //update data-time
-                    existingTimeStamp.setAttribute("data-isedited", true); //update data-time
-                }
-
-            }
-
-        }
-
-        // clear textArea
-        form.querySelector(".textBox").value = "";
-    }
 
     // send comment/reply/edit functionality
     main.addEventListener("click", (e) => {
@@ -393,10 +283,123 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (delbtn) {
             const parentEl = delbtn.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
-            console.log(parentEl);
+            const dialogueLayer = document.querySelector(".confirmDel");
+            dialogueLayer.classList.remove("hidden");
+            dialogueLayer.classList.add("grid");
+            confirmDelete(parentEl);
         }
     })
 
+    function findCommentById(commentArray, id) {
+        for (const comment of commentArray) {
+            if (comment.id == id) {
+                return comment;
+            } else if (comment.replies && comment.replies.length > 0) {
+                const foundInReplies = findCommentById(comment.replies, id);
+                if (foundInReplies) {
+                    return foundInReplies;
+                }
+            }
+        }
+        return null; // explicit fallback
+    }
+
+    //send comment logic
+    // comment send function
+    function sendComment(form, tempId, context, section, info) {
+        const mainText = form.querySelector(".textBox").value.trim(); // locate textarea input
+        const userObj = {
+            id: Math.floor((Math.random()) * 10000000),
+            content: mainText,
+            createdAt: new Date().toISOString(),
+            score: 0,
+            source: "user",
+            user: {
+                image: {
+                    png: "./images/avatars/image-juliusomo.png",
+                    webp: "./images/avatars/image-juliusomo.webp"
+                },
+                username: "juliusomo"
+            },
+            replies: []
+        }
+
+        if (mainText && mainText != "") {
+
+            if (context == "regular") {
+                savedComments.replies = savedComments.replies || [];
+                savedComments.push(userObj);//add comment obj to regular flow
+                localStorage.setItem("commentList", JSON.stringify(savedComments));
+
+                // render
+                loadComments(userObj, tempId, section);
+            } else if (context == "reply") {
+                // set the repliedTo in userObj
+                userObj.replyingTo = info[1];
+                userObj.content = mainText;
+                // locate the replied comment via id
+                const repliedComment = findCommentById(savedComments, info[0]);
+
+                // save to local storage
+                if (repliedComment) {
+                    repliedComment.replies = repliedComment.replies || [];
+                    repliedComment.replies.push(userObj);
+                    localStorage.setItem("commentList", JSON.stringify(savedComments));
+                } else {
+                    console.warn("No comment found with the given ID!");
+                }
+
+                // render
+                if (repliedComment) loadComments(userObj, tempId, section);
+            } else if (context == "edit") {
+                if (info[1] && info[1] !== null) {
+                    userObj.editingTo = info[1] // set the user to whom a reply is being edited
+                }
+                // reassign
+                const toEdit = document.getElementById(info[0]).querySelector(".comment-body");
+                console.log(toEdit);
+                const edit = form.querySelector(".textBox").value;
+                const parentComment = toEdit.parentElement.parentElement; // get the parent of the comment body
+                const existingTimeStamp = parentComment.querySelector(".createdAt");
+
+                // reassign in localstorage
+                const editedComment = findCommentById(savedComments, info[0]);
+                if (editedComment) {
+                    editedComment.content = edit;
+                    editedComment.editedAt = new Date().toISOString();
+                    localStorage.setItem("commentList", JSON.stringify(savedComments))
+                } else {
+                    console.warn("❌ No comment found with the given ID");
+                }
+
+                // update the comment body and time stamp render
+                if (toEdit)
+                    if (info[1] && info[1] !== null) {
+                        // if the edited comment is a reply, add the mention prefix
+                        const mentionSpan = document.createElement("span");
+                        mentionSpan.classList.add("t-purple-600", "font-medium");
+                        mentionSpan.textContent = `@${info[1]}`; // first word, like "@amyrobson"
+                        const restText = document.createTextNode(" " + edit);
+                        toEdit.innerHTML = ""; // clear old text
+                        toEdit.appendChild(mentionSpan);
+                        toEdit.appendChild(restText);
+                    } else {
+                        toEdit.textContent = edit; //reassign
+                    }
+
+                if (existingTimeStamp) {
+                    existingTimeStamp.textContent = `Edited ${formatTimeAgo(editedComment.editedAt)}`; //update time
+                    existingTimeStamp.setAttribute("data-time", editedComment.editedAt); //update data-time
+                    existingTimeStamp.setAttribute("data-isedited", true); //update data-time
+                }
+
+            }
+
+        }
+
+        // clear textArea
+        form.querySelector(".textBox").value = "";
+    }
 
     // time calculating function
     function formatTimeAgo(createdAt) {
@@ -436,4 +439,55 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // update every 12 seconds
     setInterval(updateTimestamps, 15000);
+
+    // find parent array and index given id
+    function findParentArrayAndIndex(commentArray, id) {
+        for (let i = 0; i < commentArray.length; i++) {
+            const comment = commentArray[i];
+            if (comment.id === id) {
+                return { parentArray: commentArray, index: i };
+            } else if (comment.replies && comment.replies.length > 0) {
+                const found = findParentArrayAndIndex(comment.replies, id);
+                if (found) {
+                    return found;
+                }
+            }
+        }
+        return null; // explicit fallback
+    }
+
+    // confirm delete function
+    function confirmDelete(comment) {
+        const modal = document.querySelector(".confirmDel");
+        modal.onclick = function (e) {
+            const confirmBtn = e.target.closest(".yesDelete");
+            const cancelBtn = e.target.closest(".noDelete");
+
+            if (confirmBtn) {
+                const commentId = Number(comment.querySelector(".comment").id);
+                const savedComments = JSON.parse(localStorage.getItem("commentList") || "[]");
+                // locate the comment index to be deleted and its immediate parent array 
+                const result = findParentArrayAndIndex(savedComments, commentId);
+
+                if (result) {
+                    const { parentArray, index } = result;
+                    parentArray.splice(index, 1); // remove the comment from the parent array
+                    localStorage.setItem("commentList", JSON.stringify(savedComments)); // update local storage
+
+                    // remove the comment from the DOM
+                    comment.remove();
+                } else {
+                    console.warn("❌ No comment found with the given ID");
+                }
+
+                modal.classList.remove("grid");
+                modal.classList.add("hidden");
+
+            }
+            if (cancelBtn) {
+                modal.classList.remove("grid");
+                modal.classList.add("hidden");
+            }
+        }
+    }
 })
