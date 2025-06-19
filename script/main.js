@@ -171,6 +171,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const delbtn = e.target.closest(".delete") //edit user comment form
 
         if (mainForm) {
+            // add form submission on enter key
+            mainForm.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault(); // prevent default enter key behavior
+                    sendComment(mainForm, "userComment", "regular", commentSection, null);
+                }
+            })
             const mainFormBtns = mainForm.querySelectorAll(".send"); //locate both send buttons
             mainFormBtns.forEach(btn => {
                 btn.addEventListener("click", (e) => {
